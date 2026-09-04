@@ -2,9 +2,8 @@ import pandas as pd
 
 MainExcelFile = pd.read_excel("company_sales.xlsx")
 
-print(MainExcelFile.head())
-print(MainExcelFile.shape)
-print(MainExcelFile.columns)
-print(MainExcelFile.dtypes)
-print(MainExcelFile.isna().sum())
-print(MainExcelFile.duplicated().sum())
+MainExcelFile = MainExcelFile.drop_duplicates()
+MainExcelFile["City"] = MainExcelFile["City"].fillna("Unknown")
+MainExcelFile["Unit_Price"] = MainExcelFile["Unit_Price"].fillna(MainExcelFile[MainExcelFile["Product"] == "Laptop"]["Unit_Price"].median())
+MainExcelFile.loc[MainExcelFile["Quantity"] == 99, "Quantity"] = 9
+
