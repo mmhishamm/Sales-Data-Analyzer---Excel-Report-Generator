@@ -39,6 +39,11 @@ TopRevenueByProduct = RevenueByProduct.sort_values(ascending=False).head(1)
 TopAvgPriceByProduct = AvgPriceByProduct.sort_values(ascending=False).head(1)
 TopProductCount = ProductCount.sort_values(ascending=False).head(1)
 
+TopProducts = pd.DataFrame({"Metrics": ["Top Average Price", "Top Product Sold", "Top Revenue Product", "Top Revenue Percentage", "Top orders made"],
+                            "Product":[TopAvgPriceByProduct.index[0],TopProductSold.index[0],TopRevenueByProduct.index[0],TopRevenuePercentage.index[0],TopProductCount.index[0]],
+                             "Values":[TopAvgPriceByProduct.iloc[0],TopProductSold.iloc[0],TopRevenueByProduct.iloc[0],TopRevenuePercentage.iloc[0],TopProductCount.iloc[0]] })
+
+
 TotalRevenue = MainExcelFile["Revenue"].sum()
 TotalUnits = MainExcelFile["Quantity"].sum()
 TotalOrders= MainExcelFile.index.size
@@ -51,3 +56,4 @@ Summary = pd.DataFrame({"Metric":["TotalRevenue", "TotalUnits", "TotalOrders", "
 with pd.ExcelWriter("Sales Report.xlsx", engine="openpyxl") as writer:
     Summary.to_excel(writer, sheet_name="Sales_Summary", index= False)
     ProductPerformance.to_excel(writer, sheet_name="Product_Performance")
+    TopProducts.to_excel(writer, sheet_name="Product_Performance", startrow= len(ProductPerformance) + 3, index = False)
