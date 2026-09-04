@@ -7,3 +7,5 @@ MainExcelFile["City"] = MainExcelFile["City"].fillna("Unknown")
 MainExcelFile["Unit_Price"] = MainExcelFile["Unit_Price"].fillna(MainExcelFile[MainExcelFile["Product"] == "Laptop"]["Unit_Price"].median())
 MainExcelFile.loc[MainExcelFile["Quantity"] == 99, "Quantity"] = 9
 
+MainExcelFile["Revenue"] = MainExcelFile["Quantity"] * MainExcelFile ["Unit_Price"]
+print(MainExcelFile["Revenue"].sum())
