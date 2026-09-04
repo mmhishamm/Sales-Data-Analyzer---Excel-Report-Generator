@@ -33,4 +33,21 @@ ProductPerformance.loc["Total"] = [MainExcelFile["Unit_Price"].mean(),
                                       100,
                                       ] 
 
-ProductPerformance.to_excel("Product_Performance.xlsx")
+TopProductSold = QuantityByProduct.sort_values(ascending=False).head(1)
+TopRevenuePercentage = RevenuePercentage.sort_values(ascending=False).head(1)
+TopRevenueByProduct = RevenueByProduct.sort_values(ascending=False).head(1)
+TopAvgPriceByProduct = AvgPriceByProduct.sort_values(ascending=False).head(1)
+TopProductCount = ProductCount.sort_values(ascending=False).head(1)
+
+TotalRevenue = MainExcelFile["Revenue"].sum()
+TotalUnits = MainExcelFile["Quantity"].sum()
+TotalOrders= MainExcelFile.index.size
+AverageOrderValue = MainExcelFile["Revenue"].mean()
+AverageUnitPrice = MainExcelFile["Unit_Price"].mean()
+
+Summary = pd.DataFrame({"Metric":["TotalRevenue", "TotalUnits", "TotalOrders", "AverageOrderValue","AverageUnitPrice"],
+                        "Values":[TotalRevenue,TotalUnits, TotalOrders, AverageOrderValue,AverageUnitPrice ]})
+
+with pd.ExcelWriter("Sales Report.xlsx", engine="openpyxl") as writer:
+    Summary.to_excel(writer, sheet_name="Sales_Summary", index= False)
+    ProductPerformance.to_excel(writer, sheet_name="Product_Performance")
